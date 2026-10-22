@@ -101,7 +101,10 @@ and `resources/` directories.
 
 Codex lists the skills as `egm:egm-brainstorm`, `egm:egm-draft`,
 `egm:egm-review`, and so on. Invoke one by mentioning it, for example
-`$egm:egm-review docs/designs/<feature>.md`, or pick it from `/skills`.
+`$egm:egm-review docs/designs/<feature>.md`, or pick it from `/skills`. Each
+skill ships `agents/openai.yaml` with `policy.allow_implicit_invocation: false`,
+the Codex counterpart of `disable-model-invocation`, so Codex never starts an
+EGM skill on its own.
 
 Codex does not register the personas in `agents/` as subagent types. Skills
 spawn a general-purpose subagent with `spawn_agent` and tell it to read the

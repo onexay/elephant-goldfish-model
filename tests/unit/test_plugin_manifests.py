@@ -17,7 +17,7 @@
 import json
 import pathlib
 import re
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import yaml
 
@@ -87,6 +87,20 @@ def test_codex_marketplace_points_at_repo_root(
   assert entry["name"] == "egm"
   assert entry["source"]["source"] == "local"
   assert (repo_root / entry["source"]["path"]).resolve() == repo_root.resolve()
+
+
+def test_skills_disable_implicit_invocation(
+    discovered_skills: List[pathlib.Path],
+) -> None:
+  """Verifies no skill auto-starts in Claude Code or Codex."""
+  for skill_path in discovered_skills:
+    skill = (skill_path / "SKILL.md").read_text("utf-8")
+    frontmatter = yaml.safe_load(skill.split("---")[1])
+    assert frontmatter.get("disable-model-invocation") is True, skill_path
+    policy = yaml.safe_load(
+        (skill_path / "agents" / "openai.yaml").read_text("utf-8")
+    )["policy"]
+    assert policy["allow_implicit_invocation"] is False, skill_path
 
 
 def test_goldfish_reviewers_omit_instruction_files(
