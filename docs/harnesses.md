@@ -66,6 +66,14 @@ and personas resolve `agents/`, `resources/`, and `skills/` through
 `${CLAUDE_PLUGIN_ROOT}`, which Claude Code replaces with the installed plugin
 path. Reports and drafts are written to your project.
 
+The seven Goldfish reviewer personas set `omitClaudeMd: true`, so Claude Code
+starts them without the user, project, and local `CLAUDE.md` files (managed
+policy files still load). This needs Claude Code 2.1.271 or later. They also set
+`omitAgentsMd: true` to keep `AGENTS.md` out of reviewer context. Claude Code
+does not load `AGENTS.md`, and no harness has been verified to read this key
+yet. The synthesizer and bootstrap orchestrator keep the files. Isolation covers
+context only: reviewers can still read any file they can reach.
+
 Structured gates use Claude's `AskUserQuestion` tool. It always adds an "Other"
 option for free-text answers.
 

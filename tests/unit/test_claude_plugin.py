@@ -19,6 +19,18 @@ import pathlib
 import re
 from typing import Any, Dict
 
+import yaml
+
+# Personas that must run with zero inherited project instructions.
+GOLDFISH_REVIEWERS = (
+    "codebase_details",
+    "comprehension",
+    "design_critic",
+    "implementation_readiness",
+    "structural",
+    "style",
+    "zoom_out",
+)
 # Matches plugin-root paths that skills and personas tell the agent to read.
 PLUGIN_PATH_PATTERN = re.compile(
     r"`((?:skills|agents|resources)/[A-Za-z0-9_./-]+\.md)`"
@@ -50,6 +62,17 @@ def test_claude_marketplace_points_at_repo_root(
   entry = marketplace["plugins"][0]
   assert entry["name"] == plugin["name"]
   assert (repo_root / entry["source"]).resolve() == repo_root.resolve()
+
+
+def test_goldfish_reviewers_omit_instruction_files(
+    repo_root: pathlib.Path,
+) -> None:
+  """Verifies Goldfish reviewers start without CLAUDE.md or AGENTS.md."""
+  for name in GOLDFISH_REVIEWERS:
+    persona = repo_root / "agents" / f"{name}.md"
+    frontmatter = yaml.safe_load(persona.read_text("utf-8").split("---")[1])
+    assert frontmatter.get("omitClaudeMd") is True, f"{name}: omitClaudeMd"
+    assert frontmatter.get("omitAgentsMd") is True, f"{name}: omitAgentsMd"
 
 
 def test_plugin_root_paths_exist(repo_root: pathlib.Path) -> None:
