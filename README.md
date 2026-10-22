@@ -55,14 +55,18 @@ For the foundational essay introducing this methodology, see Dave Rensin's artic
 
 ## Quickstart
 
-In Claude Code, install with:
+Install EGM as a Claude plugin from this fork:
 
-```
-/plugin marketplace add google/elephant-goldfish-model
-/plugin install egm@elephant-goldfish-model
-```
+*   **Claude Code (CLI)**:
 
-Claude Code namespaces the commands below: `/egm-review` is also available as `/egm:egm-review`. For other harnesses, see [Harnesses](docs/harnesses.md).
+    ```
+    /plugin marketplace add onexay/elephant-goldfish-model
+    /plugin install egm@elephant-goldfish-model
+    ```
+
+*   **Claude Desktop**: In Cowork, open Customize > Plugins > Add marketplace, enter `onexay/elephant-goldfish-model`, then install `egm`.
+
+Claude namespaces the commands below: `/egm-review` is also available as `/egm:egm-review`. For other harnesses, see [Harnesses](docs/harnesses.md).
 
 1.  **Ideate & Stress-Test**:
     Run `/egm-brainstorm` to explore problem boundaries and subject raw concepts to a multi-lens Goldfish shootdown swarm.
