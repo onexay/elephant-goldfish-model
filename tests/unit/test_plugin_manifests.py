@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Unit tests for the Claude Code plugin and marketplace manifests."""
+"""Unit tests for the Claude and Codex plugin and marketplace manifests."""
 
 import json
 import pathlib
@@ -62,6 +62,31 @@ def test_claude_marketplace_points_at_repo_root(
   entry = marketplace["plugins"][0]
   assert entry["name"] == plugin["name"]
   assert (repo_root / entry["source"]).resolve() == repo_root.resolve()
+
+
+def test_codex_manifest_matches_claude_manifest(
+    repo_root: pathlib.Path,
+) -> None:
+  """Verifies Codex metadata does not drift from the Claude manifest."""
+  codex = read_json(repo_root / ".codex-plugin" / "plugin.json")
+  claude = read_json(repo_root / ".claude-plugin" / "plugin.json")
+  for field in ("name", "version", "description", "license"):
+    assert codex[field] == claude[field], f"'{field}' differs"
+  assert (repo_root / codex["skills"]).resolve() == repo_root / "skills"
+
+
+def test_codex_marketplace_points_at_repo_root(
+    repo_root: pathlib.Path,
+) -> None:
+  """Verifies the Codex marketplace lists this plugin from the repo root."""
+  marketplace = read_json(repo_root / ".agents/plugins/marketplace.json")
+  claude = read_json(repo_root / ".claude-plugin" / "marketplace.json")
+  assert marketplace["name"] == claude["name"]
+  assert len(marketplace["plugins"]) == 1
+  entry = marketplace["plugins"][0]
+  assert entry["name"] == "egm"
+  assert entry["source"]["source"] == "local"
+  assert (repo_root / entry["source"]["path"]).resolve() == repo_root.resolve()
 
 
 def test_goldfish_reviewers_omit_instruction_files(

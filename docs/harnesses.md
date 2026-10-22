@@ -12,6 +12,7 @@ text.
 | Gemini CLI | `gemini extensions install https://github.com/google/elephant-goldfish-model` |
 | Claude Code | `/plugin marketplace add onexay/elephant-goldfish-model`, then `/plugin install egm@elephant-goldfish-model` |
 | Claude Desktop (Cowork) | Customize > Plugins > Add marketplace, enter `onexay/elephant-goldfish-model`, then install `egm` |
+| Codex | `codex plugin marketplace add onexay/elephant-goldfish-model`, then `codex plugin add egm@elephant-goldfish-model` |
 
 Install the whole plugin. Skill-only installers that copy `skills/` alone
 break EGM, because the skills read `agents/` and
@@ -24,6 +25,7 @@ break EGM, because the skills read `agents/` and
 | Antigravity | `plugin.json` | `skills/` (default) | `agents/` (default) |
 | Gemini CLI | `gemini-extension.json` | `skills/` (default) | `agents/` (default) |
 | Claude Code, Claude Desktop | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | `skills/` (default) | `agents/` (default) |
+| Codex | `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json` | `skills/` | Not registered; personas are read from `agents/` |
 
 Persona prompts live in `agents/`, the directory Antigravity and Gemini CLI
 scan for subagents. Each persona has `name` and `description` frontmatter, so
@@ -40,6 +42,7 @@ phrase to its own tool:
 | Antigravity | `invoke_subagent` | Yes | Yes |
 | Gemini CLI | Subagents | Yes | Not verified |
 | Claude Code, Claude Desktop (Cowork) | Agent tool (`egm:<name>`) | Yes | Yes, 3 levels by default |
+| Codex | `spawn_agent` with `fork_turns: "none"` | No | Yes |
 
 Where a harness has no named persona, the skill spawns a general-purpose
 subagent and tells it to read `agents/<file>.md` first. If a harness cannot
@@ -94,11 +97,34 @@ Claude Code). Plain chat cannot run EGM: chat skills have no subagents and are
 uploaded one skill folder at a time, so they cannot read the shared `agents/`
 and `resources/` directories.
 
+## Codex
+
+Codex lists the skills as `egm:egm-brainstorm`, `egm:egm-draft`,
+`egm:egm-review`, and so on. Invoke one by mentioning it, for example
+`$egm:egm-review docs/designs/<feature>.md`, or pick it from `/skills`.
+
+Codex does not register the personas in `agents/` as subagent types. Skills
+spawn a general-purpose subagent with `spawn_agent` and tell it to read the
+persona file. Every Goldfish spawn must set `fork_turns` to `"none"`: when
+`fork_turns` is omitted, Codex copies the parent conversation into the subagent.
+
+Codex has no plugin-root variable for skill text. The skills resolve
+`agents/`, `resources/`, and `skills/` from the installed `SKILL.md` path: the
+plugin root is three directories above it.
+
+Codex subagents load the project's `AGENTS.md` even with `fork_turns: "none"`.
+The `omitClaudeMd` and `omitAgentsMd` persona keys have no effect in Codex, and
+it offers no per-subagent way to skip `AGENTS.md`. Keep design-specific
+context out of `AGENTS.md` if you want reviews free of it.
+
+`codex exec` has no question tool, so gates fall back to plain chat.
+
 ## Support Status & Contributing Other Harnesses
 
 Our initial release officially supports **Antigravity** and **Gemini CLI**.
-**Claude Code** and **Claude Desktop** packaging is in place; end-to-end
-verification of `/egm-brainstorm`, `/egm-draft`, and `/egm-review` is pending. We welcome
+**Claude Code**, **Claude Desktop**, and **Codex** packaging is in place;
+end-to-end verification of `/egm-brainstorm`, `/egm-draft`, and `/egm-review`
+is pending. We welcome
 contributors who want to help add and verify support for other agent harnesses!
 
 ### Contributing Support for New Harnesses

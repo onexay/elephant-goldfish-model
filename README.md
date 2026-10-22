@@ -55,7 +55,7 @@ For the foundational essay introducing this methodology, see Dave Rensin's artic
 
 ## Quickstart
 
-Install EGM as a Claude plugin from this fork:
+Install EGM as a plugin from this fork:
 
 *   **Claude Code (CLI)**:
 
@@ -65,6 +65,14 @@ Install EGM as a Claude plugin from this fork:
     ```
 
 *   **Claude Desktop**: In Cowork, open Customize > Plugins > Add marketplace, enter `onexay/elephant-goldfish-model`, then install `egm`.
+*   **Codex**:
+
+    ```
+    codex plugin marketplace add onexay/elephant-goldfish-model
+    codex plugin add egm@elephant-goldfish-model
+    ```
+
+    In Codex, invoke skills by mention, for example `$egm:egm-review`.
 
 Claude namespaces the commands below: `/egm-review` is also available as `/egm:egm-review`. For other harnesses, see [Harnesses](docs/harnesses.md).
 

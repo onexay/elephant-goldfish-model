@@ -32,17 +32,21 @@ with the Elephant context to resolve findings.
 
 Paths to `agents/`, `resources/`, and `skills/` in this skill are relative to
 the EGM plugin root, not the user's project. In Claude Code, the plugin root is
-`${CLAUDE_PLUGIN_ROOT}`. Pass absolute paths to subagents.
+`${CLAUDE_PLUGIN_ROOT}`. In Codex, it is three directories above this
+`SKILL.md`. Pass absolute paths to subagents.
 
 ## Delegation
 
 A Goldfish runs in a fresh context with no conversation history. Spawn each
 subagent with your harness's subagent tool (Antigravity: `invoke_subagent`;
-Gemini CLI: subagents; Claude Code: the Agent tool). Each subagent is defined in
-`agents/<file>.md`, and its frontmatter `name` (for example `egm-zoom-out`) is
-the subagent type to request where your harness registers named subagents.
-Claude Code prefixes the plugin name: request `egm:egm-zoom-out`. Otherwise
-spawn a general-purpose subagent and tell it to read that persona file first.
+Gemini CLI: subagents; Claude Code: the Agent tool; Codex: `spawn_agent`). Each
+subagent is defined in `agents/<file>.md`, and its frontmatter `name` (for
+example `egm-zoom-out`) is the subagent type to request where your harness
+registers named subagents. Claude Code prefixes the plugin name: request
+`egm:egm-zoom-out`. Otherwise (including Codex) spawn a general-purpose
+subagent and tell it to read that persona file first. In Codex, always set
+`fork_turns` to `"none"`: by default `spawn_agent` copies this conversation into
+the subagent, which is not a Goldfish.
 Pass the prompt verbatim and wait for the report. If your harness cannot nest
 subagents, use direct dispatch instead of the synthesizer. See
 `docs/harnesses.md`.

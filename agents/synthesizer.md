@@ -35,7 +35,7 @@ Inspect the `Mode` parameter specified by the caller (`Mode: BRAINSTORM` vs `Mod
 ### IF Mode: REVIEW (Document Audit)
 * **Personas Directory**: `agents/{name}.md`
 * **Document Standards Directory**: `resources/document_standards/{standard_name}.md`
-* **Plugin Root**: Both directories are relative to the EGM plugin root, not the user's project. In Claude Code, the plugin root is `${CLAUDE_PLUGIN_ROOT}`, and named subagents take the `egm:` prefix (for example `egm:egm-zoom-out`). Pass absolute paths to subagents.
+* **Plugin Root**: Both directories are relative to the EGM plugin root, not the user's project. In Claude Code, the plugin root is `${CLAUDE_PLUGIN_ROOT}`, and named subagents take the `egm:` prefix (for example `egm:egm-zoom-out`). In Codex, the plugin root is the directory that holds `agents/`, `resources/`, and `skills/` for the invoking skill; spawn general-purpose subagents with `fork_turns` set to `"none"` and tell each to read its persona file. Pass absolute paths to subagents.
 
 1. **Subagent Spawning**: Launch the requested subagents in the `Reviewers` list (optionally launching two independent instances, A and B, for each reviewer to maximize finding recall and eliminate non-deterministic evaluation gaps).
 2. **Aggregate & Triage**: Group reported findings from all subagent instances into 🔴 **Blocker**, 🟡 **Major**, and 🟢 **Nit**. Deduplicate overlapping findings and normalize file references.

@@ -18,7 +18,8 @@ the aligned problem and requirements from the brainstorm phase.
 
 Paths to `agents/`, `resources/`, and `skills/` in this skill are relative to
 the EGM plugin root, not the user's project. In Claude Code, the plugin root is
-`${CLAUDE_PLUGIN_ROOT}`. Pass absolute paths to subagents. Paths to
+`${CLAUDE_PLUGIN_ROOT}`. In Codex, it is three directories above this
+`SKILL.md`. Pass absolute paths to subagents. Paths to
 `references/` are relative to this skill's directory (`${CLAUDE_SKILL_DIR}` in
 Claude Code).
 
