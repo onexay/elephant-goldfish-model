@@ -10,8 +10,8 @@ text.
 | --- | --- |
 | Antigravity | `/plugin`, then install from `https://github.com/google/elephant-goldfish-model` |
 | Gemini CLI | `gemini extensions install https://github.com/google/elephant-goldfish-model` |
-| Claude Code | `/plugin marketplace add google/elephant-goldfish-model`, then `/plugin install egm@elephant-goldfish-model` |
-| Claude Desktop (Cowork) | Customize > Plugins > Add marketplace, enter `google/elephant-goldfish-model`, then install `egm` |
+| Claude Code | `/plugin marketplace add onexay/elephant-goldfish-model`, then `/plugin install egm@elephant-goldfish-model` |
+| Claude Desktop (Cowork) | Customize > Plugins > Add marketplace, enter `onexay/elephant-goldfish-model`, then install `egm` |
 
 Install the whole plugin. Skill-only installers that copy `skills/` alone
 break EGM, because the skills read `agents/` and
