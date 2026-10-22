@@ -1,0 +1,14 @@
+{
+  "name": "elephant-goldfish-model",
+  "owner": {
+    "name": "Google LLC"
+  },
+  "description": "Elephant-Goldfish Model (EGM) plugin for Claude Code and Claude Desktop.",
+  "plugins": [
+    {
+      "name": "egm",
+      "source": "./",
+      "description": "Elephant-Goldfish Model: spec-driven development with deep-context drafting and zero-context Goldfish reviews."
+    }
+  ]
+}

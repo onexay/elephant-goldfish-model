@@ -55,6 +55,15 @@ For the foundational essay introducing this methodology, see Dave Rensin's artic
 
 ## Quickstart
 
+In Claude Code, install with:
+
+```
+/plugin marketplace add google/elephant-goldfish-model
+/plugin install egm@elephant-goldfish-model
+```
+
+Claude Code namespaces the commands below: `/egm-review` is also available as `/egm:egm-review`. For other harnesses, see [Harnesses](docs/harnesses.md).
+
 1.  **Ideate & Stress-Test**:
     Run `/egm-brainstorm` to explore problem boundaries and subject raw concepts to a multi-lens Goldfish shootdown swarm.
 2.  **Draft**:
@@ -64,7 +73,7 @@ For the foundational essay introducing this methodology, see Dave Rensin's artic
 4.  **Submit & Implement**:
     Submit the verified design doc via Pull Request, and implement code against the approved specification.
 
-For detailed setup, supported harnesses (**Antigravity** and **Gemini CLI**), and walkthroughs, see [Getting Started](docs/getting_started.md), [Harnesses](docs/harnesses.md), and the [Framework Architecture](docs/designs/architecture.md).
+For detailed setup, supported harnesses (**Antigravity**, **Gemini CLI**, and **Claude Code** / **Claude Desktop**), and walkthroughs, see [Getting Started](docs/getting_started.md), [Harnesses](docs/harnesses.md), and the [Framework Architecture](docs/designs/architecture.md).
 
 ---
 

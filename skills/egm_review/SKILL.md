@@ -13,16 +13,24 @@ description: >-
 
 Reviews and validates a design document through specialized reviewer personas.
 
+## Plugin Paths
+
+Paths to `agents/`, `resources/`, and `skills/` in this skill are relative to
+the EGM plugin root, not the user's project. In Claude Code, the plugin root is
+`${CLAUDE_PLUGIN_ROOT}`. Pass absolute paths to subagents.
+
 ## Delegation
 
 A Goldfish runs in a fresh context with no conversation history. Spawn each
 subagent with your harness's subagent tool (Antigravity: `invoke_subagent`;
-Gemini CLI: subagents). Each subagent is defined in `agents/<file>.md`, and its
-frontmatter `name` (for example `egm-zoom-out`) is the subagent type to request
-where your harness registers named subagents. Otherwise spawn a general-purpose
-subagent and tell it to read that persona file first. Pass the prompt verbatim
-and wait for the report. If your harness cannot nest subagents,
-use direct dispatch instead of the synthesizer. See `docs/harnesses.md`.
+Gemini CLI: subagents; Claude Code: the Agent tool). Each subagent is defined in
+`agents/<file>.md`, and its frontmatter `name` (for example `egm-zoom-out`) is
+the subagent type to request where your harness registers named subagents.
+Claude Code prefixes the plugin name: request `egm:egm-zoom-out`. Otherwise
+spawn a general-purpose subagent and tell it to read that persona file first.
+Pass the prompt verbatim and wait for the report. If your harness cannot nest
+subagents, use direct dispatch instead of the synthesizer. See
+`docs/harnesses.md`.
 If your harness has no subagent tool, stop and tell the user: a review in the same context is not a Goldfish review.
 
 ## Execution Constraints (CRITICAL)
@@ -230,7 +238,8 @@ plain chat):
             chat when edits are complete to re-run)`.
         *   Option 3: `Pause Review (save progress and exit)`.
 2.  **Resolution Semantics (Option 1 for Stages 7 and 9)**:
-    *   **Hand-off to Resolver**: The agent invokes `egm-resolve` in the primary
+    *   **Hand-off to Resolver**: The agent runs `egm-resolve` (read
+        `skills/egm_resolve/SKILL.md` and follow it) in the primary
         Elephant context window on the target range (`FeatureRange` or
         `DetailedRange`), passing the parsed findings from `critic_report.md` or
         `implementation_readiness_report.md`.
@@ -340,8 +349,9 @@ plain chat):
 
 ### Subflow: Critic Review
 
-1.  **Invoke Antagonistic Review Loop**: Invoke `egm-review-loop` in-thread on
-    `FeatureRange` with reviewers `[egm-design, egm-structural, egm-style]` and
+1.  **Invoke Antagonistic Review Loop**: Run `egm-review-loop` in-thread (read
+    `skills/egm_review_loop/SKILL.md` and follow it) on `FeatureRange` with
+    reviewers `[egm-design, egm-structural, egm-style]` and
     standards `{"egm-design": "feature-spec-standard", "egm-structural":
     "feature-spec-standard"}`.
 2.  **Notify User (No Chat Dumps)**: Notify user that findings are written to
@@ -357,7 +367,8 @@ plain chat):
         when edits are complete to re-run)"`
     *   Option 3: `"Pause Review (save progress and exit)"`
 4.  **Remediation & Resolution (Option 1)**:
-    *   Invoke `egm-resolve` in the primary Elephant context on `FeatureRange`,
+    *   Run `egm-resolve` (read `skills/egm_resolve/SKILL.md` and follow it)
+        in the primary Elephant context on `FeatureRange`,
         passing findings from `critic_report.md` (or
         `goldfish_review_report.md`).
     *   Execute approved fixes directly on `TargetFile` using file editing
@@ -367,8 +378,9 @@ plain chat):
 
 ### Subflow: Implementation Readiness Test
 
-1.  **Invoke Antagonistic Review Loop**: Invoke `egm-review-loop` in-thread on
-    `DetailedRange` with reviewers `[egm-implementation-readiness,
+1.  **Invoke Antagonistic Review Loop**: Run `egm-review-loop` in-thread (read
+    `skills/egm_review_loop/SKILL.md` and follow it) on `DetailedRange` with
+    reviewers `[egm-implementation-readiness,
     egm-codebase-details, egm-style]` and standards
     `{"egm-implementation-readiness": "implementation-readiness-standard",
     "egm-codebase-details": "implementation-readiness-standard"}`.
@@ -385,7 +397,8 @@ plain chat):
         when edits are complete to re-run)"`
     *   Option 3: `"Pause Review (save progress and exit)"`
 4.  **Remediation & Resolution (Option 1)**:
-    *   Invoke `egm-resolve` in the primary Elephant context on `DetailedRange`,
+    *   Run `egm-resolve` (read `skills/egm_resolve/SKILL.md` and follow it)
+        in the primary Elephant context on `DetailedRange`,
         passing findings from `implementation_readiness_report.md` (or
         `goldfish_review_report.md`).
     *   Execute approved fixes directly on `TargetFile` using file editing

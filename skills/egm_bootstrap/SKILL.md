@@ -20,16 +20,24 @@ assistants.
 *   **Hay**: Parent-level Repository Blueprints that roll up child interface
     contracts into high-altitude indexes.
 
+## Plugin Paths
+
+Paths to `agents/`, `resources/`, and `skills/` in this skill are relative to
+the EGM plugin root, not the user's project. In Claude Code, the plugin root is
+`${CLAUDE_PLUGIN_ROOT}`. Pass absolute paths to subagents.
+
 ## Delegation
 
 A Goldfish runs in a fresh context with no conversation history. Spawn each
 subagent with your harness's subagent tool (Antigravity: `invoke_subagent`;
-Gemini CLI: subagents). Each subagent is defined in `agents/<file>.md`, and its
-frontmatter `name` (for example `egm-zoom-out`) is the subagent type to request
-where your harness registers named subagents. Otherwise spawn a general-purpose
-subagent and tell it to read that persona file first. Pass the prompt verbatim
-and wait for the report. If your harness cannot nest subagents,
-use direct dispatch instead of the synthesizer. See `docs/harnesses.md`.
+Gemini CLI: subagents; Claude Code: the Agent tool). Each subagent is defined in
+`agents/<file>.md`, and its frontmatter `name` (for example `egm-zoom-out`) is
+the subagent type to request where your harness registers named subagents.
+Claude Code prefixes the plugin name: request `egm:egm-zoom-out`. Otherwise
+spawn a general-purpose subagent and tell it to read that persona file first.
+Pass the prompt verbatim and wait for the report. If your harness cannot nest
+subagents, use direct dispatch instead of the synthesizer. See
+`docs/harnesses.md`.
 If your harness has no subagent tool, run the scout steps inline.
 
 ## Inputs
@@ -186,7 +194,8 @@ If your harness has no subagent tool, run the scout steps inline.
     *   **Spawn Unbounded Sub-Orchestrators**: For each partition subtree root,
         use your harness's subagent tool to spawn a parallel worker:
         *   Subagent: `egm-bootstrap-orchestrator` (`agents/bootstrap_orchestrator.md`) (or a general-purpose subagent)
-        *   `Prompt`: "Run egm-bootstrap with path=`[path]`,
+        *   `Prompt`: "Read `[absolute path of skills/egm_bootstrap/SKILL.md]`
+            and follow it with path=`[path]`,
             is_worker=true, sub_tree_root=`[partition_root]`,
             target_filename=`[target_filename]`." 
     *   **Unbounded Execution**: Spawn all Sub-Orchestrators in parallel without

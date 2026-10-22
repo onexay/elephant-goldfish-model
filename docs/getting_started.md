@@ -24,8 +24,8 @@ emerging patterns and tried to make it easier to get started with fewer steps.
 
 ## Runtime Setup
 
-In our first release, the EGM skills and personas are packaged for
-**Antigravity** and **Gemini CLI** (see [Harnesses](harnesses.md) for
+The EGM skills and personas are packaged for **Antigravity**, **Gemini CLI**,
+and **Claude Code** / **Claude Desktop** (see [Harnesses](harnesses.md) for
 installation instructions). We welcome contributors who want to help add
 support for other agent harnesses!
 
