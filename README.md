@@ -72,9 +72,7 @@ Install EGM as a plugin from this fork:
     codex plugin add egm@elephant-goldfish-model
     ```
 
-    In Codex, invoke skills by mention, for example `$egm:egm-review`.
-
-Claude namespaces the commands below: `/egm-review` is also available as `/egm:egm-review`. For other harnesses, see [Harnesses](docs/harnesses.md).
+EGM skills run only when you invoke them; neither Claude nor Codex starts one on its own. In Claude, `/egm-review` is also available as `/egm:egm-review`. In Codex, invoke skills by mention: `$egm:egm-review` instead of `/egm-review`. Goldfish reviews are less isolated in Codex than in Claude; see [Harnesses](docs/harnesses.md#codex).
 
 1.  **Ideate & Stress-Test**:
     Run `/egm-brainstorm` to explore problem boundaries and subject raw concepts to a multi-lens Goldfish shootdown swarm.
@@ -85,7 +83,7 @@ Claude namespaces the commands below: `/egm-review` is also available as `/egm:e
 4.  **Submit & Implement**:
     Submit the verified design doc via Pull Request, and implement code against the approved specification.
 
-For detailed setup, supported harnesses (**Antigravity**, **Gemini CLI**, and **Claude Code** / **Claude Desktop**), and walkthroughs, see [Getting Started](docs/getting_started.md), [Harnesses](docs/harnesses.md), and the [Framework Architecture](docs/designs/architecture.md).
+For detailed setup, supported harnesses (**Antigravity**, **Gemini CLI**, **Claude Code** / **Claude Desktop**, and **Codex**), and walkthroughs, see [Getting Started](docs/getting_started.md), [Harnesses](docs/harnesses.md), and the [Framework Architecture](docs/designs/architecture.md).
 
 ---
 

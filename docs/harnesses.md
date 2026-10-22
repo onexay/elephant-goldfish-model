@@ -27,8 +27,8 @@ break EGM, because the skills read `agents/` and
 | Claude Code, Claude Desktop | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | `skills/` (default) | `agents/` (default) |
 | Codex | `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json` | `skills/` | Not registered; personas are read from `agents/` |
 
-Persona prompts live in `agents/`, the directory Antigravity and Gemini CLI
-scan for subagents. Each persona has `name` and `description` frontmatter, so
+Persona prompts live in `agents/`, the directory Antigravity, Gemini CLI, and
+Claude Code scan for subagents. Each persona has `name` and `description` frontmatter, so
 harnesses that load `agents/*.md` register them as named subagents
 (`egm-design`, `egm-zoom-out`, and so on).
 
@@ -72,9 +72,9 @@ path. Reports and drafts are written to your project.
 The seven Goldfish reviewer personas set `omitClaudeMd: true`, so Claude Code
 starts them without the user, project, and local `CLAUDE.md` files (managed
 policy files still load). This needs Claude Code 2.1.271 or later. They also set
-`omitAgentsMd: true` to keep `AGENTS.md` out of reviewer context. Claude Code
-does not load `AGENTS.md`, and no harness has been verified to read this key
-yet. The synthesizer and bootstrap orchestrator keep the files. Isolation covers
+`omitAgentsMd: true` to keep `AGENTS.md` out of reviewer context, but no
+supported harness reads this key: Claude Code never loads `AGENTS.md`, and
+Codex loads it regardless (see [Codex](#codex)). The synthesizer and bootstrap orchestrator keep the files. Isolation covers
 context only: reviewers can still read any file they can reach.
 
 Structured gates use Claude's `AskUserQuestion` tool. It always adds an "Other"
@@ -99,7 +99,12 @@ and `resources/` directories.
 
 ## Codex
 
-Codex lists the skills as `egm:egm-brainstorm`, `egm:egm-draft`,
+EGM runs in Codex, but its Goldfish reviews are less isolated than in Claude
+Code: reviewers start fresh only when the skill passes `fork_turns: "none"`,
+they load `AGENTS.md`, and personas are read from a file rather than loaded as
+subagent types. The details follow.
+
+Codex names the skills `egm:egm-brainstorm`, `egm:egm-draft`,
 `egm:egm-review`, and so on. Invoke one by mentioning it, for example
 `$egm:egm-review docs/designs/<feature>.md`, or pick it from `/skills`. Each
 skill ships `agents/openai.yaml` with `policy.allow_implicit_invocation: false`,
@@ -122,13 +127,29 @@ context out of `AGENTS.md` if you want reviews free of it.
 
 `codex exec` has no question tool, so gates fall back to plain chat.
 
+To test a local checkout without touching your Codex setup, install it into a
+throwaway Codex home. Codex copies the plugin into its cache at install time, so
+re-run `codex plugin add` after each change:
+
+```bash
+export CODEX_HOME=$(mktemp -d)
+ln -s ~/.codex/auth.json "$CODEX_HOME/auth.json"
+codex plugin marketplace add /path/to/elephant-goldfish-model
+codex plugin add egm@elephant-goldfish-model
+```
+
 ## Support Status & Contributing Other Harnesses
 
 Our initial release officially supports **Antigravity** and **Gemini CLI**.
-**Claude Code**, **Claude Desktop**, and **Codex** packaging is in place;
-end-to-end verification of `/egm-brainstorm`, `/egm-draft`, and `/egm-review`
-is pending. We welcome
-contributors who want to help add and verify support for other agent harnesses!
+
+**Claude Code**, **Claude Desktop**, and **Codex** packaging is in place. Stage 5
+of `/egm-review` (Initial Zoom Out) has run end to end from the plugin in
+Claude Code and Codex, with the reviewer in a fresh subagent and the report
+written to the project. Full runs of `/egm-brainstorm`, `/egm-draft`, and
+`/egm-review`, and any run in Claude Desktop, are not yet verified.
+
+We welcome contributors who want to help add and verify support for other agent
+harnesses!
 
 ### Contributing Support for New Harnesses
 
